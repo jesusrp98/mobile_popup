@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -157,8 +155,9 @@ class _PopUpContent extends StatelessWidget {
           actions: <Widget>[
             if (fullscreen != null)
               IconButton(
-                icon:
-                    Icon(fullscreen ? Icons.fullscreen_exit : Icons.fullscreen),
+                icon: Icon(
+                  fullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                ),
                 onPressed: () => toggleFullscreen(!fullscreen),
               )
           ],
@@ -175,34 +174,17 @@ class _ExitButton extends StatelessWidget {
     this.color,
     @required this.navigator,
   });
+
   final Color color;
   final NavigatorState navigator;
+
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS || Platform.isMacOS) {
-      return CupertinoButton(
-        padding: EdgeInsets.zero,
-        child: Tooltip(
-          message: 'Back',
-          child: Text(
-            'Done',
-            style: TextStyle(color: color),
-          ),
-          excludeFromSemantics: true,
-        ),
-        onPressed: () {
-          navigator.pop();
-        },
-      );
-    }
-
     return IconButton(
       icon: Icon(Icons.close, color: color),
-      tooltip: 'Back',
+      tooltip: DefaultMaterialLocalizations().closeButtonTooltip,
       padding: EdgeInsets.zero,
-      onPressed: () {
-        navigator.pop();
-      },
+      onPressed: () => navigator.pop(),
     );
   }
 }

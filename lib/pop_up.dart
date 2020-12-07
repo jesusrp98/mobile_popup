@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 Future<T> showMobilePopup<T>({
@@ -8,7 +6,7 @@ Future<T> showMobilePopup<T>({
   bool mobilePush = false,
   WidgetBuilder builder,
 }) {
-  if (mobilePush && (Platform.isIOS || Platform.isAndroid)) {
+  if (mobilePush) {
     return Navigator.of(context).push<T>(
       MaterialPageRoute(builder: builder),
     );
@@ -16,15 +14,19 @@ Future<T> showMobilePopup<T>({
 
   assert(debugCheckHasMaterialLocalizations(context));
 
-  final ThemeData theme = Theme.of(context);
+  final theme = Theme.of(context);
   return showGeneralDialog(
     context: context,
-    pageBuilder: (BuildContext buildContext, Animation<double> animation,
-        Animation<double> secondaryAnimation) {
-      final Widget pageChild = Builder(builder: builder);
-      return Builder(builder: (BuildContext context) {
-        return theme != null ? Theme(data: theme, child: pageChild) : pageChild;
-      });
+    pageBuilder: (context, animation, secondaryAnimation) {
+      final pageChild = Builder(builder: builder);
+      return Builder(
+        builder: (context) => theme != null
+            ? Theme(
+                data: theme,
+                child: pageChild,
+              )
+            : pageChild,
+      );
     },
     barrierDismissible: barrierDismissible,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
